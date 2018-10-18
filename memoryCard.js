@@ -50,7 +50,7 @@ const cardsArray = [{
 ];
 
 const game = document.getElementById('game');
-
+const body = document.getElementById('body');
 const grid = document.createElement('section');
 grid.setAttribute('class', 'grid');
 
@@ -60,12 +60,25 @@ game.appendChild(grid);
 let firstGuess = '';
 let secondGuess = '';
 let delay = 1200;
+let matched=0;
 function match() {
   var selected = document.querySelectorAll('.selected');
   selected.forEach(card => {
   card.classList.add('match');
+  matched++
+  console.log(matched)
+  if (matched === 24){
+      body.classList.remove('body')
+      game.classList.add('win');  
+}
   })
 }
+
+
+
+
+ 
+
 let previousTarget = null;
 
 let gameGrid = cardsArray.concat(cardsArray);
@@ -99,12 +112,12 @@ grid.addEventListener('click', function (event) {
     count++;
     if(count === 1){
       firstGuess = clicked.parentNode.dataset.name;
-      console.log(firstGuess);
+    
       clicked.parentNode.classList.add('selected');
 
     } else {
       secondGuess = clicked.parentNode.dataset.name;
-      console.log(secondGuess);
+     
       clicked.parentNode.classList.add('selected');
     }
     if (firstGuess !== '' && secondGuess !== '') {
@@ -127,5 +140,4 @@ const resetGuesses = () => {
     card.classList.remove('selected');
   });
 };
-
 
