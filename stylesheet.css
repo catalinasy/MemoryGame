@@ -15,7 +15,7 @@
 .displayMatch{
   border: solid white 2px;
   border-radius: 10px;
-  background: rgb(228, 56, 219);
+  background: radial-gradient(#fc15ca, #e9c2e0) ;
   max-width: 15%;
   max-height: 10%; 
   margin:0;
@@ -29,7 +29,6 @@
   align-items: center;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20px;
-  opacity: 0.8;
 }
 .innerDiv{
   display: flex;
@@ -97,8 +96,14 @@
   position: absolute;
   backface-visibility: hidden;
   border: none;
-  background: white url('img/question.png') no-repeat center center / contain;
+  background:  url('img/question.svg') no-repeat center, linear-gradient(#fc15ca, #9198e5);
+  background-size: 70%;
+  
+  
+
 }
+
+
 .back {
   transform: rotateY(180deg);
   background-color: white;
