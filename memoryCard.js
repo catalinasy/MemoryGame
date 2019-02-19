@@ -1,60 +1,62 @@
 // Card data
 const cardsArray = [{
-    'name': 'Blondie',
-    'img': 'img/blondie.png',
-  },
-  {
-    'name': 'Joan',
-    'img': 'img/joan.png',
-  },
-  {
-    'name': 'bikiniKill',
-    'img': 'img/bikiniKill.png',
-  },
-  {
-    'name': 'Gwen',
-    'img': 'img/gwen.png',
-  },
-  {
-    'name': 'Patti',
-    'img': 'img/patti.png',
-  },
-  {
-    'name': 'Jannis',
-    'img': 'img/jannis.png',
-  },
-  {
-    'name': 'Celeste',
-    'img': 'img/celeste.png',
-  },
-  {
-    'name': 'Amy',
-    'img': 'img/amy.png',
-  },
-  {
-    'name': 'nikki',
-    'img': 'img/nikki.png',
-  },
-  {
-    'name': 'Donnas',
-    'img': 'img/donnas.png',
-  },
-  {
-    'name': 'stevie',
-    'img': 'img/stevie.png',
-  },
-  {
-    'name': 'courtney',
-    'img': 'img/courtney.png',
-  },
+  'name': 'Blondie',
+  'img': 'img/blondie.png',
+},
+{
+  'name': 'Joan',
+  'img': 'img/joan.png',
+},
+{
+  'name': 'bikiniKill',
+  'img': 'img/bikiniKill.png',
+},
+{
+  'name': 'Gwen',
+  'img': 'img/gwen.png',
+},
+{
+  'name': 'Patti',
+  'img': 'img/patti.png',
+},
+{
+  'name': 'Jannis',
+  'img': 'img/jannis.png',
+},
+{
+  'name': 'Celeste',
+  'img': 'img/celeste.png',
+},
+{
+  'name': 'Amy',
+  'img': 'img/amy.png',
+},
+{
+  'name': 'nikki',
+  'img': 'img/nikki.png',
+},
+{
+  'name': 'Donnas',
+  'img': 'img/donnas.png',
+},
+{
+  'name': 'stevie',
+  'img': 'img/stevie.png',
+},
+{
+  'name': 'courtney',
+  'img': 'img/courtney.png',
+},
 ];
 
 const scoreBoard = document.querySelector('.score');
 let score = 0;
+scoreBoard.textContent = score;
 
-// const playScore= document.querySelector('.tries');
-// let tries = 0;
-// playScore.textContent = tries;
+const playScore = document.querySelector('.tries');
+let tries = 0;
+playScore.textContent = tries;
+let juega = 0;
 
 const game = document.getElementById('game');
 const body = document.getElementById('body');
@@ -63,38 +65,31 @@ grid.setAttribute('class', 'grid');
 
 game.appendChild(grid);
 
-
 let firstGuess = '';
 let secondGuess = '';
 let delay = 1200;
-let matched=0;
+let matched = 0;
 function match() {
   var selected = document.querySelectorAll('.selected');
   selected.forEach(card => {
-  card.classList.add('match');
-  matched++
+    card.classList.add('match');
+    matched++
 
-if(matched%2==0){
-  score = matched/2
-  }
-if(selected%2==0){
-  tries=selected/2;
-}
-scoreBoard.textContent = score;
+    if (matched % 2 == 0) {
+      score = matched / 2
+    }
 
-if (matched === 24){
+
+    scoreBoard.textContent = score;
+    playScore.textContent = tries;
+
+    if (matched === 24) {
       body.classList.remove('body')
-      game.classList.add('win');  
-}
+      game.classList.add('win');
+    }
 
   })
 }
-
-
-
-
-
- 
 
 let previousTarget = null;
 
@@ -112,39 +107,53 @@ gameGrid.forEach(item => {
   const back = document.createElement('div');
   back.classList.add('back');
   back.style.backgroundImage = `url(${item.img})`;
-  
+
   grid.appendChild(card);
   card.appendChild(front);
   card.appendChild(back);
 
+
+  function intento(){
+    juega++;
+    console.log(juega);
+    if(juega%2==0){
+      tries++;
+      playScore.textContent = tries;
+    }
+  }
+  card.addEventListener("click", intento);
+  console.log(tries);  
+
+
 });
 
-let count=0;
+
+let count = 0;
 grid.addEventListener('click', function (event) {
 
   let clicked = event.target;
   if (clicked.nodeName === 'SECTION' || clicked === previousTarget) { return; }
-  
-  if(count<2){
+
+  if (count < 2) {
     count++;
-    if(count === 1){
+    if (count === 1) {
       firstGuess = clicked.parentNode.dataset.name;
-    
       clicked.parentNode.classList.add('selected');
 
     } else {
       secondGuess = clicked.parentNode.dataset.name;
-     
+
       clicked.parentNode.classList.add('selected');
     }
     if (firstGuess !== '' && secondGuess !== '') {
-     if(firstGuess === secondGuess){
+      if (firstGuess === secondGuess) {
         setTimeout(match, delay);
         setTimeout(resetGuesses, delay);
-      } else {setTimeout(resetGuesses, delay);
+      } else {
+        setTimeout(resetGuesses, delay);
       }
     }
-   } previousTarget = clicked;
+  } previousTarget = clicked;
 });
 
 const resetGuesses = () => {
