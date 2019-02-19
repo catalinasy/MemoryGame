@@ -49,6 +49,13 @@ const cardsArray = [{
   },
 ];
 
+const scoreBoard = document.querySelector('.score');
+let score = 0;
+
+// const playScore= document.querySelector('.tries');
+// let tries = 0;
+// playScore.textContent = tries;
+
 const game = document.getElementById('game');
 const body = document.getElementById('body');
 const grid = document.createElement('section');
@@ -66,13 +73,23 @@ function match() {
   selected.forEach(card => {
   card.classList.add('match');
   matched++
-  console.log(matched)
-  if (matched === 24){
+
+if(matched%2==0){
+  score = matched/2
+  }
+if(selected%2==0){
+  tries=selected/2;
+}
+scoreBoard.textContent = score;
+
+if (matched === 24){
       body.classList.remove('body')
       game.classList.add('win');  
 }
+
   })
 }
+
 
 
 
