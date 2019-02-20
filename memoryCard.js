@@ -1,4 +1,4 @@
-// Card data
+// Declaro Array de objetos que contienen cada una de las imagenes con las que voy a hacer las cartas
 const cardsArray = [{
   'name': 'Blondie',
   'img': 'img/blondie.png',
@@ -49,26 +49,37 @@ const cardsArray = [{
 },
 ];
 
+//Decllaro la variable game trayendo el elemento game del html y creo el elemtno grid que es donde voy a guardar mis cartas
+const game = document.getElementById('game');
+const grid = document.createElement('section');
+
+//Seteo atributos del gris y agrego el elemento creado para que sea visible en el html
+grid.setAttribute('class', 'grid');
+game.appendChild(grid);
+
+//Variable que contiene el puntaje e imprimo el valor seteado en 0
 const scoreBoard = document.querySelector('.score');
 let score = 0;
 scoreBoard.textContent = score;
 
+//variable que contiene la cantidad de intentos e imprimo el valor
 const playScore = document.querySelector('.tries');
 let tries = 0;
 playScore.textContent = tries;
 let juega = 0;
 
-const game = document.getElementById('game');
-const body = document.getElementById('body');
-const grid = document.createElement('section');
-grid.setAttribute('class', 'grid');
-
-game.appendChild(grid);
-
+//variables que serviran para hacer las comparaciones y para el juego en si
 let firstGuess = '';
 let secondGuess = '';
 let delay = 1200;
 let matched = 0;
+
+let previousTarget = null;
+
+let count = 0;
+
+let gameGrid = cardsArray.concat(cardsArray);
+
 function match() {
   var selected = document.querySelectorAll('.selected');
   selected.forEach(card => {
@@ -84,22 +95,31 @@ function match() {
     playScore.textContent = tries;
 
     if (matched === 24) {
-      body.classList.remove('body')
-      game.classList.add('win');
+      
+      body.classList.remove('body');
+      body.classList.add('win');
     }
 
   })
 }
 
-let previousTarget = null;
+// Funcion para contar los intentos
 
-let gameGrid = cardsArray.concat(cardsArray);
+function intento(){
+    tries++;
+    playScore.textContent = tries;
+  };
+
+
+// Aramr el grid con todas las cartas y posicionarlas de manera azarosa en cada uno de los juegos
+
 gameGrid.sort(() => 0.5 - Math.random());
-gameGrid.forEach(item => {
-
-  const card = document.createElement('div');
+gameGrid.forEach((item, index) => {
+//Crear el elemento carta con un frente y un back
+  card = document.createElement('div');
   card.classList.add('card');
   card.dataset.name = item.name;
+  card.dataset.id = index;
 
   const front = document.createElement('div');
   front.classList.add('front');
@@ -112,27 +132,16 @@ gameGrid.forEach(item => {
   card.appendChild(front);
   card.appendChild(back);
 
-
-  function intento(){
-    juega++;
-    console.log(juega);
-    if(juega%2==0){
-      tries++;
-      playScore.textContent = tries;
-    }
-  }
-  card.addEventListener("click", intento);
-  console.log(tries);  
-
+// //Utilizando la variable carta crear un evento en el que se ejecute la funcion intento para contar la cantidad de intentos 
+//   card.addEventListener("click", intento);
 
 });
 
 
-let count = 0;
 grid.addEventListener('click', function (event) {
 
   let clicked = event.target;
-  if (clicked.nodeName === 'SECTION' || clicked === previousTarget) { return; }
+  if (clicked.nodeName === 'SECTION' || (previousTarget && clicked.parentNode.dataset.id === previousTarget.parentNode.dataset.id)) { return; }
 
   if (count < 2) {
     count++;
@@ -145,15 +154,19 @@ grid.addEventListener('click', function (event) {
 
       clicked.parentNode.classList.add('selected');
     }
+
     if (firstGuess !== '' && secondGuess !== '') {
       if (firstGuess === secondGuess) {
+        intento();
         setTimeout(match, delay);
         setTimeout(resetGuesses, delay);
       } else {
+        intento();
         setTimeout(resetGuesses, delay);
       }
     }
-  } previousTarget = clicked;
+  } 
+  previousTarget = clicked;
 });
 
 const resetGuesses = () => {
