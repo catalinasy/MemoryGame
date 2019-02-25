@@ -52,7 +52,7 @@ const cardsArray = [{
 //Decllaro la variable game trayendo el elemento game del html y creo el elemtno grid que es donde voy a guardar mis cartas
 const game = document.getElementById('game');
 const grid = document.createElement('section');
-
+const body = document.getElementById('body')
 //Seteo atributos del gris y agrego el elemento creado para que sea visible en el html
 grid.setAttribute('class', 'grid');
 game.appendChild(grid);
@@ -97,7 +97,7 @@ function match() {
     if (matched === 24) {
       
       body.classList.remove('body');
-      body.classList.add('win');
+      grid.classList.add('win');
     }
 
   })
