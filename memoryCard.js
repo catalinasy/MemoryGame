@@ -49,11 +49,13 @@ const cardsArray = [{
 },
 ];
 
-//Decllaro la variable game trayendo el elemento game del html y creo el elemtno grid que es donde voy a guardar mis cartas
+//Declaro la variable game trayendo el elemento game del html y creo el elemtno grid que es donde voy a guardar mis cartas
+//traigo el elemento Body para poder ponerle la clase win cuando se termine el juego
 const game = document.getElementById('game');
 const grid = document.createElement('section');
 const body = document.getElementById('body')
-//Seteo atributos del gris y agrego el elemento creado para que sea visible en el html
+
+//Seteo atributos del grid y agrego el elemento creado para que sea visible en el html
 grid.setAttribute('class', 'grid');
 game.appendChild(grid);
 
@@ -80,6 +82,8 @@ let count = 0;
 
 let gameGrid = cardsArray.concat(cardsArray);
 
+//funcion para realizar el match
+
 function match() {
   var selected = document.querySelectorAll('.selected');
   selected.forEach(card => {
@@ -92,7 +96,6 @@ function match() {
 
 
     scoreBoard.textContent = score;
-    playScore.textContent = tries;
 
     if (matched === 24) {
       
